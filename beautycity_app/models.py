@@ -12,6 +12,9 @@ class Salon(models.Model):
         verbose_name = 'Салон'
         verbose_name_plural = 'Салоны'
 
+    def __str__(self):
+        return self.title
+
 
 class Service(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название')
@@ -25,6 +28,9 @@ class Service(models.Model):
     class Meta:
         verbose_name = 'Услуга'
         verbose_name_plural = 'Услуги'
+
+    def __str__(self):
+        return self.name
 
 
 class Employee(models.Model):
@@ -43,6 +49,9 @@ class Employee(models.Model):
         verbose_name = 'Мастер'
         verbose_name_plural = 'Мастера'
 
+    def __str__(self):
+        return self.name
+
 
 class EmployeeSchedule(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='Мастер')
@@ -55,6 +64,9 @@ class EmployeeSchedule(models.Model):
         verbose_name = 'Расписание мастера'
         verbose_name_plural = 'Расписания мастеров'
 
+    def __str__(self):
+        return f'{self.employee} - {self.date} - {self.start_time}'
+
 
 class Category(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название')
@@ -62,3 +74,6 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория услуг'
         verbose_name_plural = 'Категории услуг'
+
+    def __str__(self):
+        return self.title
