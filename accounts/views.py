@@ -20,7 +20,7 @@ def register_user(request):
                     phone_number=phone_number
                 )
 
-            return redirect(reverse('index'))
+            return redirect(reverse('accounts:login'))
     return render(request, 'accounts/register.html')
 
 
