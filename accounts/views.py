@@ -1,19 +1,17 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.db import transaction
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from accounts.forms import UserRegisterForm
+from accounts.forms import UserRegisterForm, UserLoginForm
 
 User = get_user_model()
 
 
 @transaction.atomic()
-def authorize_user(request):
+def register_user(request):
     if request.method == 'POST':
-        print(request.POST)
         form = UserRegisterForm(request.POST)
-        print(form.errors)
         if form.is_valid():
             user_data = form.cleaned_data
             phone_number = user_data.pop('phone_number')
@@ -23,4 +21,22 @@ def authorize_user(request):
                 )
 
             return redirect(reverse('index'))
-    return render(request, 'accounts/authorize.html')
+    return render(request, 'accounts/register.html')
+
+
+def login_user(request):
+    if request.method == "POST":
+        form = UserLoginForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            user_data = form.cleaned_data
+            try:
+                user = User.objects.get(phone_number=user_data['phone_number'])
+            except User.DoesNotExist:
+                user = None
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect("/")
+    return render(request, "accounts/login.html")

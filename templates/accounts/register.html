@@ -63,11 +63,11 @@
 		{% include 'header.html' %}
 	{% endblock header %}
 <!--<div>Конец хедера</div>-->
-<!-- Форма авторизации -->
+<!-- Форма регистрации -->
     <div class="authPopup popup container">
-        <div class="popup__title authPopup__title">Войти по номеру телефона</div>
+        <div class="popup__title authPopup__title">Зарегистрироваться по номеру телефона</div>
         <p class="popup__text authPopup__text">Введите свой номер телефона</p>
-        <form method="post" action="{% url 'accounts:authorize' %}"  class="authPopup__form">
+        <form method="post" action="{% url 'accounts:register' %}"  class="authPopup__form">
             {% csrf_token %}
             <div class="contacts__form_inputBlock">
                 <input type="text" name="phone_number" class="contacts__form_iunput" placeholder="+7(999)999-99-99" required="">
@@ -76,11 +76,12 @@
                 <input type="checkbox" class="contacts__form_checkbox" checked="">
                 <span class="contacts__form_checkboxBlock__intro">Я согласен(а) с политикой конфиденциальности</span>
             </div>
+			<p class="popup__text authPopup__text">Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войти</a></p>
 
             <button type="submit" class="popup__btn authPopup__btn">Отправить</button>
         </form>
     </div>
-<!-- Конец формы авторизации -->
+<!-- Конец формы регистрации -->
 <!--	<div> Футер </div>-->
 	{% block footer %}
 		{% include 'footers.html' %}

@@ -1,15 +1,15 @@
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 
-from accounts.views import authorize_user
+from accounts.views import register_user, login_user
 
 app_name = 'accounts'
 
 urlpatterns = [
-    path('authorize', authorize_user, name='authorize'),
+    path('register', register_user, name='register'),
 ]
 
 urlpatterns += [
-    path('login', LoginView.as_view(), name='login'),
+    path('login', login_user, name='login'),
     path('logout', LogoutView.as_view(), name='logout'),
 ]

@@ -29,7 +29,7 @@
                             {% if request.user.is_authenticated %}
                                 <a href="{% url 'notes' %}"><span class="header__block_auth__intro">{{request.user.phone_number}}</span></a>
                             {% else %}
-                                <a href="{% url 'accounts:authorize' %}"><span class="header__block_auth__intro">Войти</span>
+                                <a href="{% url 'accounts:login' %}"><span class="header__block_auth__intro">Войти</a></span>
                             {% endif %}
                         </div>
                     </div>
