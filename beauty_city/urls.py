@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from django.conf.urls.static import static
 
 from beautycity_app import views
@@ -28,5 +28,6 @@ urlpatterns = [
     path('notes', views.notes, name='notes'),
     path('popup', views.popup, name='popup'),  # Сделано для пред просмотра
     path('service', views.service, name='service'),
+    path('', include('accounts.urls', namespace='accounts')),
     path('service_finally', views.service_finally, name='service_finally'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

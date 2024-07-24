@@ -57,4 +57,6 @@ class Client(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
+        if self.first_name:
+            return self.first_name
         return str(self.phone_number)
