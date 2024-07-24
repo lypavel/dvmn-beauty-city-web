@@ -16,7 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static
+
+from beautycity_app import views
+from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('', views.index, name='index'),
+    path('administrator', views.administrator, name='administrator'),
+    path('notes', views.notes, name='notes'),
+    path('popup', views.popup, name='popup'),  # Сделано для пред просмотра
+    path('service', views.service, name='service'),
+    path('service_finally', views.service_finally, name='service_finally'),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
