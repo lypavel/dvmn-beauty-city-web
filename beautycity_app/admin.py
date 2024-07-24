@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Salon, Service, Employee, EmployeeSchedule, Category, Appointment
+from .models import Salon, Service, Employee, EmployeeSchedule, Category
 
 
 @admin.register(Salon)
@@ -34,9 +34,6 @@ class EmployeeScheduleAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title']
     search_fields = ['title']
-
-
-
 
 
 admin.site.site_header = 'Панель управления салоном красоты'
