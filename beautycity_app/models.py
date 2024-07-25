@@ -8,6 +8,9 @@ class Salon(models.Model):
     masters = models.ManyToManyField('Employee', related_name='salons', verbose_name='Мастера')
     img = models.ImageField(upload_to='img/salons', null=True, blank=True, verbose_name='Изображение')
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = 'Салон'
         verbose_name_plural = 'Салоны'
@@ -21,6 +24,9 @@ class Service(models.Model):
     duration = models.DurationField(help_text="Продолжительность услуги в формате ЧЧ:ММ:СС",
                                     verbose_name='Длительность')
     img = models.ImageField(upload_to='img/services', null=True, blank=True, verbose_name='Изображение')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = 'Услуга'
@@ -39,6 +45,9 @@ class Employee(models.Model):
     photo = models.ImageField(upload_to='img/masters', default='img/masters/all.svg', null=True, blank=True,
                               verbose_name='Фото')
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'Мастер'
         verbose_name_plural = 'Мастера'
@@ -51,6 +60,9 @@ class EmployeeSchedule(models.Model):
     start_time = models.TimeField(verbose_name='Начало работы')
     end_time = models.TimeField(verbose_name='Конец работы')
 
+    def __str__(self):
+        return f'{self.date} - {self.employee.name} - {self.salon.title}'
+
     class Meta:
         verbose_name = 'Расписание мастера'
         verbose_name_plural = 'Расписания мастеров'
@@ -58,6 +70,9 @@ class EmployeeSchedule(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название')
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = 'Категория услуг'

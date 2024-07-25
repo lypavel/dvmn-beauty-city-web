@@ -125,8 +125,6 @@ $(document).ready(function() {
 		$('#mobMenu').hide()
 	})
 
-	new AirDatepicker('#datepickerHere')
-
 	var acc = document.getElementsByClassName("accordion");
 	var i;
 
@@ -408,11 +406,10 @@ $(document).ready(function() {
 	})
 
 	$(document).on('click', '.servicePage', function() {
-		if($('.time__items .time__elems_elem .time__elems_btn').hasClass('active') && $('.service__form_block > button').hasClass('selected')) {
+		if($('.service__form_select').has('selected')) {
 			$('.time__btns_next').addClass('active')
 		}
 	})
-	
 
 
 })
