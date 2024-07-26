@@ -30,28 +30,29 @@
 						<div class="service__block">
 							<h1 class="service__title">Запись на услугу</h1>
 						</div>
-						<form action="#" class="serviceFinally__form">
+						<form action="{% url 'appointment:approve_appointment' %}" method="post" class="serviceFinally__form">
+              {% csrf_token %}
 							<div class="serviceFinally__form_block">
 								<div class="serviceFinally__form_header fic">
-									<span class="serviceFinally__form_header__number">{{ order.id }}</span>
+									<span class="serviceFinally__form_header__number">Запись</span>
 									<div class="serviceFinally__form_header__item fic">
-										<div class="serviceFinally__form_header__service">{{ order.salon }}</div>
-										<div class="serviceFinally__form_header__address">{{ order.address }}</div>
+										<div class="serviceFinally__form_header__service">{{ salon.title}}</div>
+										<div class="serviceFinally__form_header__address">{{ salon.address}}</div>
 									</div>
 								</div>
 								<div class="serviceFinally__form_content">
 									<div class="serviceFinally__form_content__block fic">
-										<div class="serviceFinally__form_content__title">{{ order.service }}</div>
-										<div class="serviceFinally__form_content__price">{{ order.price }} ₽</div>
+										<div class="serviceFinally__form_content__title">{{ service.name}}</div>
+										<div class="serviceFinally__form_content__price">{{ service.price}}</div>
 									</div>
 									<div class="serviceFinally__form_content__block fic">
 										<div class="serviceFinally__form_content__items fic">
-										  	<img src="{% static order.avatar %}" alt="avatar" class="accordion__block_img">
-										  	<div class="accordion__block_master">{{ order.master }}</div>
+										  	<img src="{% static 'img/masters/avatar/vizajist1.svg' %}" alt="avatar" class="accordion__block_img">
+										  	<div class="accordion__block_master">{{ master.name}}</div>
 									    </div>
 									    <div class="serviceFinally__form_content__item fic">
-											<div class="serviceFinally__form_content__time">{{ order.time }}</div>
-											<div class="serviceFinally__form_content__date">{{ order.date }}</div>
+											<div class="serviceFinally__form_content__time">{{ time }}</div>
+											<div class="serviceFinally__form_content__date">{{ date }}</div>
 										</div>
 									</div>
 									

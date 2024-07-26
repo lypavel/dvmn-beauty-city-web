@@ -29,7 +29,7 @@
 									довольных клиентов
 								</p>
 							</div>
-							<a href="{% url 'service' %}"><button class="banner__btn">Записаться</button></a>
+							<a href="{% url 'appointment:service' %}"><button class="banner__btn">Записаться</button></a>
 						</div>
 					</div>
 					<div class="col-md-12 col-lg-5">
@@ -149,7 +149,7 @@
 									<div class="masters__footer_light">СТАЖ РАБОТЫ:</div>
 									<div class="masters__footer_num">{{ master.experience }}</div>
 								</div>
-								<button onclick="location.href='{% url 'service' %}'" class="masters__footer_btn" >Записаться</button>
+								<button onclick="location.href='{% url 'appointment:service' %}'" class="masters__footer_btn" >Записаться</button>
 							</div>
 						</div>
 					</div>

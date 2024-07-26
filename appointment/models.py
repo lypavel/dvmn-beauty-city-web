@@ -2,16 +2,17 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from accounts.models import Client
-from beautycity_app.models import Employee, Service
+from beautycity_app.models import Employee, Service, Salon
 
 
 class Appointment(models.Model):
+    salon = models.ForeignKey(Salon, on_delete=models.CASCADE, related_name='appointments', verbose_name='Салон')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='appointments', verbose_name='Клиент')
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='appointments', verbose_name='Мастер')
     service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Услуга')
     final_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Итоговая цена')
-    promocode = models.CharField(max_length=255, verbose_name='Промокод')
-    comment = models.TextField(verbose_name='Комментарий')
+    promocode = models.CharField(max_length=255, null=True, blank=True, verbose_name='Промокод')
+    comment = models.TextField(null=True, blank=True,verbose_name='Комментарий')
     date = models.DateField(verbose_name='Дата')
     start_time = models.TimeField(verbose_name='Время начала')
     end_time = models.TimeField(verbose_name='Конец')

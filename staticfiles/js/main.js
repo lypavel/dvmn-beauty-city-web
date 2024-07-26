@@ -125,8 +125,6 @@ $(document).ready(function() {
 		$('#mobMenu').hide()
 	})
 
-	new AirDatepicker('#datepickerHere')
-
 	var acc = document.getElementsByClassName("accordion");
 	var i;
 
@@ -399,20 +397,7 @@ $(document).ready(function() {
 	// 	return false
 	// })
 
-	//service
-	$('.time__items .time__elems_elem .time__elems_btn').click(function(e) {
-		e.preventDefault()
-		$('.time__elems_btn').removeClass('active')
-		$(this).addClass('active')
-		// $(this).hasClass('active') ? $(this).removeClass('active') : $(this).addClass('active')
-	})
 
-	$(document).on('click', '.servicePage', function() {
-		if($('.time__items .time__elems_elem .time__elems_btn').hasClass('active') && $('.service__form_block > button').hasClass('selected')) {
-			$('.time__btns_next').addClass('active')
-		}
-	})
-	
 
 
 })

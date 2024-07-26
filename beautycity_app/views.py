@@ -134,12 +134,7 @@ def popup(request):
     return render(request, 'popup.html')
 
 
-@login_required
-def service(request):
-    # TODO добавить ссылки
-    # TODO связать с базой данных
-    # TODO почистить от статичных данных
-    return render(request, 'service.html')
+
 
 
 def service_finally(request):
