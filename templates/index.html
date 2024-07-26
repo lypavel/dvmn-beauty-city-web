@@ -1,68 +1,20 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Beauty City</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% block head-extra %}
 	<link rel="stylesheet" href="{% static 'css/jquery.arcticmodal-0.3.css' %}">
 	<link rel="stylesheet" href="{% static 'css/simple.css' %}">
-	<link rel="stylesheet" href="{% static 'css/bootstrap-grid.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
-</head>
-<body>
+{% endblock head-extra %}
 <!--<div>Моб меню</div>-->
-	<section id="mobMenu">
-			<div class="mobMenu">
-				<div class="container">
-				<div class="mobMenu__header">
-					<div class="row">
-						<div class="col-4 col-md-3">
-							<a href="/">
-								<img src="{% static 'img/Logo.svg' %}" alt="Logo" class="logo header__logo">
-							</a>
-						</div>
-						<div class="col-3 col-md-2">
-							<img src="{% static 'img/x.svg' %}" alt="x" class="mobMenuClose">
-						</div>
-					</div>
-				</div>
-				<div class="mobMenu__content">
-					<div class="row">
-						<div class="col-md-3">
-							<nav>
-								<ul class="mobMenu__menu">
-									<li class="mobMenu__menu_item">
-										<a href="#" class="mobMenu__menu_link">Мастера</a>
-									</li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Услуги</a></li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Отзывы</a></li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Контакты</a></li>
-								</ul>
-							</nav>
-							<a href="#" class="mobMenu__account">Личный кабинет</a>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<button class="mobMenu__btn">Перезвоните мне</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+{% block mob-menu %}
+	{% include 'mob_menu.html' %}
+{% endblock mob-menu %}
 <!--<div>Конец моб меню</div>-->
 <!--<div> Хедер </div>-->
 	{% block header %}
 		{% include 'header.html' %}
 	{% endblock header %}
 <!--<div>Конец хедера</div>-->
+{% block sections %}
 	<section id="banner">
 		<div class="container">
 			<div class="banner">
@@ -73,11 +25,15 @@
 							<div class="banner__elems">
 								<img src="{% static 'img/persons.svg' %}" alt="persons" class="banner__elems_img">
 								<p class="banner__elems_intro">
-									<span class="yellow banner__elems_over">Более 1 000</span>
+									<span class="yellow banner__elems_over">Более {{ clients_count }}</span>
 									довольных клиентов
 								</p>
 							</div>
-							<a href="service.html"><button class="banner__btn">Записаться</button></a>
+							{% if not request.user.is_authenticated %}
+								<a href="{% url 'service' %}"><button class="banner__btn">Записаться</button></a>
+							{% else %}
+								<a href="{% url 'accounts:login' %}"><button class="banner__btn">Записаться</button></a>
+							{% endif %}
 						</div>
 					</div>
 					<div class="col-md-12 col-lg-5">
@@ -197,7 +153,7 @@
 									<div class="masters__footer_light">СТАЖ РАБОТЫ:</div>
 									<div class="masters__footer_num">{{ master.experience }}</div>
 								</div>
-								<button class="masters__footer_btn">Записаться</button>
+								<button onclick="location.href='{% url 'service' %}'" class="masters__footer_btn" >Записаться</button>
 							</div>
 						</div>
 					</div>
@@ -319,16 +275,16 @@
 			</div>
 		</div>
 	</section>
+{% endblock sections %}
 <!--	<div> Футер </div>-->
 	{% block footer %}
 		{% include 'footers.html' %}
 	{% endblock footer %}
 <!--<div>Конец футера</div>-->
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="{% static 'js/air-datepicker.js' %}"></script>
-	<script src="{% static 'js/jquery.arcticmodal-0.3.min.js' %}"></script>
-	<script src="{% static 'js/main.js' %}"></script>
-</body>
-</html>
+{% block scripts %}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="{% static 'js/air-datepicker.js' %}"></script>
+		<script src="{% static 'js/jquery.arcticmodal-0.3.min.js' %}"></script>
+		<script src="{% static 'js/main.js' %}"></script>
+{% endblock scripts %}
