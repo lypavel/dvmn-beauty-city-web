@@ -156,7 +156,8 @@ def index(request):
                  всем мастерам огромное уважение за труд, обязательно вернусь''',
                 'date': '1 октября 2022',
             },
-        ]
+        ],
+        'clients_count': '1001',
     }
     # контекст из шаблона.
     # если количество контекста не соответствует весртка ломается
@@ -164,7 +165,6 @@ def index(request):
     # services минимум 4
     # reviews минимум 4
     # masters минимум 4
-    # TODO добавить ссылки
     # TODO связать с базой данных
     # TODO заменить статичный контекст на контекст из базы данных
     # TODO при необходимости поправить стили чтобы количество данных не ломало страницу
@@ -173,17 +173,56 @@ def index(request):
 
 
 def administrator(request):
+    context = {
+        'admin':
+            {
+                'avatar': 'img/avatars/1.svg',
+                'payment_per_month': '628 200',
+                'visits_per_month': '349',
+                'visits_per_year': '3 956',
+                'percentage_of_visits': '100',
+            }
+    }
+
     # TODO добавить ссылки
     # TODO связать с базой данных
-    # TODO почистить от статичных данных
-    return render(request, 'admin.html')
+    return render(request, 'admin.html', context=context)
 
 
 def notes(request):
+    context = {
+        'user': {
+            'avatar': '',
+            'name': '',
+        },
+        'unpaid_orders': [
+            {
+                'service': 'Дневной макияж',
+                'service_img': 'img/icons/list.svg',
+                'master': 'Ева Колесова',
+                'price': '1 400',
+                'id': '23184',
+                'date': '29 ноября',
+                'time': '13:30',
+            }
+        ],
+        'paid_orders': [
+            {
+                'service': '',
+                'service_img': '',
+                'master': '',
+                'price': '',
+                'id': '',
+                'date': '',
+                'time': '',
+            }
+        ],
+        'total_price': '3 900 руб'
+    }
     # TODO добавить ссылки
     # TODO связать с базой данных
     # TODO почистить от статичных данных
-    return render(request, 'notes.html')
+    return render(request, 'notes.html', context=context)
 
 
 def popup(request):
@@ -202,7 +241,21 @@ def service(request):
 
 
 def service_finally(request):
+    context = {
+        'order': {
+            'time': '16:30',
+            'date': '18 ноября',
+            'id': '12345',
+            'salon': 'BeautyCity Пушкинская',
+            'address': 'ул. Пушкинская, д. 78А',
+            'service': 'Дневной макияж',
+            'price': '751',
+            'master': 'Елена',
+            'avatar': 'img/masters/avatar/vizajist1.svg',
+
+
+        }
+    }
     # TODO добавить ссылки
     # TODO связать с базой данных
-    # TODO почистить от статичных данных
-    return render(request, 'service_finally.html')
+    return render(request, 'service_finally.html', context=context)
