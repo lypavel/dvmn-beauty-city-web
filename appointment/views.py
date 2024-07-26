@@ -61,8 +61,7 @@ def approve_appointment(request):
         client, created = Client.objects.get_or_create(
             phone_number=phone,
             defaults={
-                'username': fname,
-                'comment': comment
+                'first_name': fname,
             }
         )
 
@@ -76,7 +75,9 @@ def approve_appointment(request):
             final_price=service.price,
             date=datetime.strptime(request.session['date'], '%Y-%m-%d').date(),
             start_time=start_time,
-            end_time=(datetime.combine(datetime.today(), start_time) + service.duration).time()
+            end_time=(datetime.combine(datetime.today(), start_time) + service.duration).time(),
+            comment=comment
+
         )
         return redirect('index')
 
