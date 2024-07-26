@@ -397,19 +397,7 @@ $(document).ready(function() {
 	// 	return false
 	// })
 
-	//service
-	$('.time__items .time__elems_elem .time__elems_btn').click(function(e) {
-		e.preventDefault()
-		$('.time__elems_btn').removeClass('active')
-		$(this).addClass('active')
-		// $(this).hasClass('active') ? $(this).removeClass('active') : $(this).addClass('active')
-	})
 
-	$(document).on('click', '.servicePage', function() {
-		if($('.service__form_select').has('selected')) {
-			$('.time__btns_next').addClass('active')
-		}
-	})
 
 
 })

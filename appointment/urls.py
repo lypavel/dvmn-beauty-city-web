@@ -1,6 +1,6 @@
 from django.urls import path
 
-from appointment.views import get_service, get_services, get_masters, get_slots
+from appointment.views import get_service, get_services, get_masters, get_slots, approve_appointment
 
 app_name = 'appointment'
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path('get_services', get_services, name='get_services'),
     path('get_masters', get_masters, name='get_masters'),
     path('get_slots', get_slots, name='get_slots'),
+    path('approve_appointment', approve_appointment, name='approve_appointment'),
 ]

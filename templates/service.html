@@ -109,7 +109,7 @@
 					<h1 class="service__title">Запись на услугу</h1>
 					<button class="service__btn btn">Запись по телефону</button>
 				</div>
-        <form action="#" class="service__form" id="serviceForm">
+        <form action="{% url 'appointment:approve_appointment' %}" class="service__form" id="serviceForm">
           <label for="salon">Выберите салон</label>
           <select name="selectSalon" id="salon" class="service__form_select" hx-trigger="change" hx-get="{% url 'appointment:get_services' %}" hx-target="#select_service" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
               {% for salon in salons %}
@@ -138,21 +138,19 @@
           <label for="available_slots">Доступные временные слоты</label>
           <select name="availableSlots" id="available_slots" class="service__form_select">
           </select>
+          <div class="container">
+            <div class="time">
+              <div class="time__btns">
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="submit" class="time__btns_next active">Далее</button>
+                    <button  class="time__btns_home">На главную</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
-			</div>
-		</div>
-	</section>
-	<section id="time">
-		<div class="container">
-			<div class="time">
-				<div class="time__btns">
-					<div class="row">
-						<div class="col-md-12">
-							<button  class="time__btns_next">Далее</button>
-							<button  class="time__btns_home">На главную</button>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</section>
@@ -161,7 +159,7 @@
 	{% endblock footer %}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	
+
 	<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
