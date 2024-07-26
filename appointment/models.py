@@ -23,6 +23,12 @@ class Appointment(models.Model):
 
 class Review(models.Model):
     name = models.CharField(max_length=255, verbose_name='Имя')
+    master = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        verbose_name='Мастер'
+    )
     rating = models.DecimalField(max_digits=3, decimal_places=2,
                                  validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], verbose_name='Рейтинг')
     rating_img = models.ImageField(upload_to='img/reviews', null=True, blank=True, default='img/rating.svg',

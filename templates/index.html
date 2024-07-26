@@ -29,11 +29,7 @@
 									довольных клиентов
 								</p>
 							</div>
-							{% if not request.user.is_authenticated %}
-								<a href="{% url 'service' %}"><button class="banner__btn">Записаться</button></a>
-							{% else %}
-								<a href="{% url 'accounts:login' %}"><button class="banner__btn">Записаться</button></a>
-							{% endif %}
+							<a href="{% url 'service' %}"><button class="banner__btn">Записаться</button></a>
 						</div>
 					</div>
 					<div class="col-md-12 col-lg-5">
@@ -225,27 +221,15 @@
 					</div>
 					<div class="col-md-12 col-lg-3">
 						<div class="contacts__locationBlock">
-							<div class="contacts__location fic">
-								<img src="{% static 'img/location.svg' %}" alt="location" class="contacts__location_icon">
-								<div class="contacts__location_info">
-									<div class="contacts__location_intro">ул. Пушкинская, д. 78А</div>
-								<div class="contacts__location_date">с 10:00 до 20:00  без выходных</div>
+							{% for salon in salons %}
+								<div class="contacts__location fic">
+									<img src="{% static 'img/location.svg' %}" alt="location" class="contacts__location_icon">
+									<div class="contacts__location_info">
+										<div class="contacts__location_intro">{{salon.address}}</div>
+									<div class="contacts__location_date">с 10:00 до 20:00  без выходных</div>
+									</div>
 								</div>
-							</div>
-							<div class="contacts__location fic">
-								<img src="{% static 'img/location.svg' %}" alt="location" class="contacts__location_icon">
-								<div class="contacts__location_info">
-									<div class="contacts__location_intro">ул. Красная, д. 10</div>
-								<div class="contacts__location_date">с 10:00 до 20:00  без выходных</div>
-								</div>
-							</div>
-							<div class="contacts__location fic">
-								<img src="{% static 'img/location.svg' %}" alt="location" class="contacts__location_icon">
-								<div class="contacts__location_info">
-									<div class="contacts__location_intro">ул. Ленина, д. 211</div>
-								<div class="contacts__location_date">с 10:00 до 20:00  без выходных</div>
-								</div>
-							</div>
+							{% endfor %}
 						</div>
 						<div class="contacts__block">
 							<div class="contacts__social">

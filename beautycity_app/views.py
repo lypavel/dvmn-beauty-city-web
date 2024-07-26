@@ -1,7 +1,21 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from .models import Employee, Salon, Service
 from appointment.models import Review
+
+
+def get_reviews_spelling(total_reviews: int) -> str:
+    word = 'отзыв'
+    if total_reviews in (11, 12, 13, 14):
+        spelling = word + 'ов'
+    elif total_reviews % 10 == 1:
+        spelling = word
+    elif total_reviews % 10 in (2, 3, 4):
+        spelling = word + 'а'
+    else:
+        spelling = word + 'ов'
+    return spelling
 
 
 def index(request):
@@ -13,19 +27,20 @@ def index(request):
 
     services = [{
         'title': service.name,
-        'price': service.price,
+        'price': f'{round(service.price)} ₽',
         'img': service.img
     } for service in Service.objects.iterator()]
 
     masters = [{
         'name': master.name,
         'img': master.photo,
-        'review': 'FIXME отзывов',
+        'review': f'{master.reviews.count()} '
+        f'{get_reviews_spelling(master.reviews.count())}',
         'rating_img': master.rating_img,
         'spec': master.position,
         'experience': master.experience,
         'recording': ''
-    } for master in Employee.objects.iterator()]
+    } for master in Employee.objects.prefetch_related('reviews').iterator()]
 
     reviews = [{
         'name': review.name,
@@ -34,11 +49,15 @@ def index(request):
         'date': review.date
     } for review in Review.objects.iterator()]
 
+    clients_count = 1000
+    # FIXME: загружать количество зарегистрированных пользователей из бд
+
     context = {
         'salons': salons,
         'services': services,
         'masters': masters,
         'reviews': reviews,
+        'clients_count': clients_count
     }
 
     # контекст из шаблона.
@@ -115,6 +134,7 @@ def popup(request):
     return render(request, 'popup.html')
 
 
+@login_required
 def service(request):
     # TODO добавить ссылки
     # TODO связать с базой данных
