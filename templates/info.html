@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<li id="start" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    {% include 'header.html' %}
+    </li>
+{% endblock header %}
+{% block sections %}
+<main style="margin-top: calc(2rem + 85px); margin-left: calc(2rem + 85px);">
+    <div id="salons">
+        <h2>Салоны </h2>
+        <div style="margin-left: 10%;">
+            <button  onclick="location.href='{% url 'info' %}#start'"> В начало </button>
+            <button  onclick="location.href='{% url 'info' %}#end'" > В конец </button>
+        </div>
+        <div class="row">
+            {% for salon in salons %}
+            <div class="card" style="width: 350px; margin-top: 2%; margin-bottom: 2%">
+                <img src="{% static salon.img %}" class="card-img-top">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        {{salon.title}}
+                    </h4>
+                    <br>
+                    <p class="card-text">
+                        {{salon.address}}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="masters">
+        <h2>Информация о мастерах </h2>
+        <div style="margin-left: 10%;">
+            <button  onclick="location.href='{% url 'info' %}#start'"> В начало </button>
+            <button  onclick="location.href='{% url 'info' %}#end'" > В конец </button>
+        </div>
+        <div class="row">
+            {% for service in services %}
+            <div class="card" style="width: 350px; margin-top: 2%; margin-bottom: 2%">
+                <img src="{% static service.img %}" class="card-img-top">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        {{ service.category }}: <br> {{service.name}}
+                    </h4>
+                    <br>
+                    <p class="card-text">
+                        <p>Цена {{service.price}}₽ </p>
+                        <p>Длительность {{service.duration }} </p>
+
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+<div id="services">
+    <h2>Отзывы</h2>
+    <div style="margin-left: 10%;">
+        <button  onclick="location.href='{% url 'info' %}#start'"> В начало </button>
+        <button  onclick="location.href='{% url 'info' %}#end'" > В конец </button>
+    </div>
+    <div class="row">
+        {% for master in masters %}
+            <div class="card" style="width: 350px; margin-top: 2%; margin-bottom: 2%">
+                <img src="{% static master.photo %}" class="card-img-top">
+                <img src="{% static master.rating_img %}">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        {{ master.name }}
+                    </h4>
+                    <br>
+                    <p class="card-text">
+                        <p>Специализация: {{master.position }} </p>
+                        <p>Стаж: {{master.experience}} </p>
+                        <p>Рейтинг:{{ master.rating }}</p>
+
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+<div id="reviews">
+    <br>
+    <div style="margin-left: 10%;">
+        <button  onclick="location.href='{% url 'info' %}#start'"> В начало </button>
+        <button  onclick="location.href='{% url 'info' %}#end'" > В конец </button>
+    </div>
+    <h2>Услуги</h2>
+        <div class="row">
+        {% for review in reviews %}
+            <div class="card" style="width: 350px; margin-top: 2%; margin-bottom: 2%">
+                <img src="{% static review.rating_img %}" class="card-img-top">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        {{ review.name }}
+                    </h4>
+                    <br>
+                    <p class="card-text">
+                        <p>Отзыв на {{ review.master }}: <br> {{ review.text }} </p>
+                        <p>Дата: {{ review.date }} </p>
+                        <p>Рейтинг:{{ review.rating }}</p>
+
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<div id="contacts">
+    <h2>Контакты</h2>
+    <div style="margin-left: 10%;">
+        <button  onclick="location.href='{% url 'info' %}#start'"> В начало </button>
+        <button  onclick="location.href='{% url 'info' %}#end'" > В конец </button>
+    </div>
+    <p> Наши контактные данные: </p>
+    {% for contact in contacts %}
+    <p> {{contact }} </p>
+    {% endfor %}
+</div>
+
+</main>
+{% endblock sections %}
+
+    {% block footer %}
+        <li id="end">
+        {% include 'footers.html' %}
+        </li>
+    {% endblock footer %}
+
+
