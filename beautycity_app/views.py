@@ -82,6 +82,7 @@ def administrator(request):
                 'visits_per_month': '349',
                 'visits_per_year': '3 956',
                 'percentage_of_visits': '100',
+                'role': 'Администратор'
             }
     }
 
@@ -94,33 +95,35 @@ def notes(request):
     context = {
         'user': {
             'avatar': '',
-            'name': '',
+            'phone_number': '88005553535',
         },
         'unpaid_orders': [
             {
-                'service': 'Дневной макияж',
-                'service_img': 'img/icons/list.svg',
-                'master': 'Ева Колесова',
-                'price': '1 400',
-                'id': '23184',
-                'date': '29 ноября',
-                'time': '13:30',
+                'service': 'НазваниеУслуги',
+                'service_img': 'img/services/service1.svg',
+                'master': 'ИмяМастера',
+                'price': 'ЦенаУслуги',
+                'id': 'Номер(id)Заказа',
+                'date': 'ДатаПриема',
+                'time': 'ВремяПриема',
+                'address': 'АдресСалона',
             }
         ],
         'paid_orders': [
             {
-                'service': '',
-                'service_img': '',
-                'master': '',
-                'price': '',
-                'id': '',
-                'date': '',
-                'time': '',
+                'service': 'НазваниеУслуги',
+                'service_img': 'img/services/service1.svg',
+                'master': 'ИмяМастера',
+                'price': 'ЦенаУслуги',
+                'id': 'Номер(id)Заказа',
+                'date': 'ДатаПриема',
+                'time': 'ВремяПриема',
+                'address': 'АдресСалона',
             }
         ],
-        'total_price': '3 900 руб'
+        'total_price': '9 9999 руб'
     }
-    # TODO добавить ссылки
+    # TODO добавить ссылки на оплату
     # TODO связать с базой данных
     # TODO почистить от статичных данных
     return render(request, 'notes.html', context=context)
@@ -132,9 +135,6 @@ def popup(request):
     # TODO Разбить на отдельные popup
 
     return render(request, 'popup.html')
-
-
-
 
 
 def service_finally(request):
@@ -156,3 +156,21 @@ def service_finally(request):
     # TODO добавить ссылки
     # TODO связать с базой данных
     return render(request, 'service_finally.html', context=context)
+
+
+def info(request):
+    salons = Salon.objects.all()
+    services = Service.objects.all()
+    masters = Employee.objects.all()
+    reviews = Review.objects.all()
+    contacts = ['Тел. +7 777 777 77 77', 'Почта 6ydb_KpacuBou@po4ta.ru']
+    context = {
+        'salons': salons,
+        'services': services,
+        'masters': masters,
+        'reviews': reviews,
+        'contacts': contacts,
+    }
+
+    return render(request, 'info.html', context=context)
+
