@@ -30,4 +30,5 @@ urlpatterns = [
     path('', include('appointment.urls', namespace='appointment')),
     path('', include('accounts.urls', namespace='accounts')),
     path('service_finally', views.service_finally, name='service_finally'),
+    path('info', views.info, name='info')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
