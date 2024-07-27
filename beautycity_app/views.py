@@ -75,7 +75,7 @@ def index(request):
 
 def administrator(request):
     context = {
-        'admin':
+        'user':
             {
                 'avatar': 'img/avatars/1.svg',
                 'payment_per_month': '628 200',
