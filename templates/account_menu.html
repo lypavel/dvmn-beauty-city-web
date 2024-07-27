@@ -2,8 +2,12 @@
 <div class="col-md-2 dec">
     <div class="accaunt__left">
         <div class="accaunt__ava fic">
-            <img src="{% static user.avatar %}" alt="avatar" class="accaunt__ava_img">
-            <span class="accaunt__ava_name">Администратор</span>
+            <img src="{% static user.avatar %}" onerror="this.onerror=null;this.src='{% static 'img/masters/avatar/all.svg' %}';" alt="avatar" class="accaunt__ava_img">
+            {% if user.name %}
+            <span class="accaunt__ava_name">{{ user.name }}</span>
+            {% else %}
+            <span class="accaunt__ava_name">{{ user.phone_number }}</span>
+            {% endif %}
         </div>
         <div class="accaunt__settings fic">
             <a href="#" class="accaunt__settings_intro">Изменить профиль</a>
