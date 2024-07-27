@@ -5,7 +5,7 @@
 				<div class="mobMenu__header">
 					<div class="row">
 						<div class="col-4 col-md-3">
-							<a href="/">
+							<a href="{% url 'index' %}">
 								<img src="{% static 'img/Logo.svg' %}" alt="Logo" class="logo header__logo">
 							</a>
 						</div>
@@ -20,12 +20,16 @@
 							<nav>
 								<div class="accaunt__left">
 							<div class="accaunt__ava fic">
-								<img src="{% static 'img/avatars/1.svg' %}" alt="avatar" class="accaunt__ava_img">
-								<span class="accaunt__ava_name">Алиса И.</span>
+								<img src="{% static user.avatar %}" onerror="this.onerror=null;this.src='{% static 'img/masters/avatar/all.svg' %}';" alt="avatar" class="accaunt__ava_img">
+								{% if user.name %}
+									<span class="accaunt__ava_name">{{ user.name }}</span>
+								{% else %}
+									<span class="accaunt__ava_name">{{ user.phone_number }}</span>
+								{% endif %}
 							</div>
 							<div class="accaunt__settings fic">
 								<a href="#" class="accaunt__settings_intro">Изменить профиль</a>
-								<a href="#" class="accaunt__settings_out">Выйти</a>
+								<a href="% url 'accounts:logout' %}" class="accaunt__settings_out">Выйти</a>
 							</div>
 							<nav>
 								<div class="accaunt__menu_title">МЕНЮ</div>
@@ -69,11 +73,11 @@
 							<nav>
 								<ul class="mobMenu__menu">
 									<li class="mobMenu__menu_item">
-										<a href="#" class="mobMenu__menu_link">Мастера</a>
+										<a href="{% url 'info' %}#masters " class="mobMenu__menu_link">Мастера</a>
 									</li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Услуги</a></li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Отзывы</a></li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Контакты</a></li>
+									<li class="mobMenu__menu_item"><a href="{% url 'info' %}#services " class="mobMenu__menu_link">Услуги</a></li>
+									<li class="mobMenu__menu_item"><a href="{% url 'info' %}#reviews " class="mobMenu__menu_link">Отзывы</a></li>
+									<li class="mobMenu__menu_item"><a href="{% url 'info' %}#contacts " class="mobMenu__menu_link">Контакты</a></li>
 								</ul>
 							</nav>
 							<a href="#" class="mobMenu__account">Личный кабинет</a>
