@@ -200,7 +200,7 @@
 				<textarea name="popupTextarea" class="reviewPopup__form_textarea" placeholder="Текст отзыва"></textarea>
 				<div class="contacts__form_checkboxBlock fic">
 					<input type="checkbox" class="contacts__form_checkbox" checked="">
-					<span class="contacts__form_checkboxBlock__intro">Я согласен(а) с политикой конфидециоальности</span>
+					<a href="{% static 'pdf/agreement.pdf' %}" target="_blank"><span class="contacts__form_checkboxBlock__intro">Я даю согласие на обработку персональных данных</span></a>
 				</div>
 				<button class="tipsPopup__btn popup__btn">Оплатить</button>
 			</form>

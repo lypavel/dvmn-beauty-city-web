@@ -74,7 +74,7 @@
             </div>
             <div class="contacts__form_checkboxBlock fic">
                 <input type="checkbox" class="contacts__form_checkbox" checked="">
-                <span class="contacts__form_checkboxBlock__intro">Я согласен(а) с политикой конфиденциальности</span>
+                <a href="{% static 'pdf/agreement.pdf' %}" target="_blank"><span class="contacts__form_checkboxBlock__intro">Я даю согласие на обработку персональных данных</span></a>
             </div>
 			<p class="popup__text authPopup__text">Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войти</a></p>
 
