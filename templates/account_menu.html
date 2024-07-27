@@ -4,9 +4,9 @@
         <div class="accaunt__ava fic">
             <img src="{% static user.avatar %}" onerror="this.onerror=null;this.src='{% static 'img/masters/avatar/all.svg' %}';" alt="avatar" class="accaunt__ava_img">
             {% if user.name %}
-            <span class="accaunt__ava_name">{{ user.name }}</span>
+            <span class="accaunt__ava_name">{{ request.user.name }}</span>
             {% else %}
-            <span class="accaunt__ava_name">{{ user.phone_number }}</span>
+            <span class="accaunt__ava_name">{{ request.user.phone_number }}</span>
             {% endif %}
         </div>
         <div class="accaunt__settings fic">

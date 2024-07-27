@@ -1,8 +1,8 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 
 from .models import Employee, Salon, Service
-from appointment.models import Review
+from appointment.models import Appointment, Review
 
 
 def get_reviews_spelling(total_reviews: int) -> str:
@@ -73,6 +73,8 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
+# @login_required
+@user_passes_test(lambda user: user.is_superuser)
 def administrator(request):
     context = {
         'user':
@@ -91,37 +93,24 @@ def administrator(request):
     return render(request, 'admin.html', context=context)
 
 
+@login_required
 def notes(request):
+    appointments = Appointment.objects\
+        .filter(client=request.user.id)\
+        .select_related('service', 'employee', 'salon')
+    print(appointments)
+    paid_appointments = appointments.filter(is_paid=True)
+    unpaid_appointments = appointments.filter(is_paid=False)
+    print(paid_appointments)
+
+    total_price = 0
+    for appointment in unpaid_appointments:
+        total_price += appointment.final_price
+
     context = {
-        'user': {
-            'avatar': '',
-            'phone_number': '88005553535',
-        },
-        'unpaid_orders': [
-            {
-                'service': 'НазваниеУслуги',
-                'service_img': 'img/services/service1.svg',
-                'master': 'ИмяМастера',
-                'price': 'ЦенаУслуги',
-                'id': 'Номер(id)Заказа',
-                'date': 'ДатаПриема',
-                'time': 'ВремяПриема',
-                'address': 'АдресСалона',
-            }
-        ],
-        'paid_orders': [
-            {
-                'service': 'НазваниеУслуги',
-                'service_img': 'img/services/service1.svg',
-                'master': 'ИмяМастера',
-                'price': 'ЦенаУслуги',
-                'id': 'Номер(id)Заказа',
-                'date': 'ДатаПриема',
-                'time': 'ВремяПриема',
-                'address': 'АдресСалона',
-            }
-        ],
-        'total_price': '9 9999 руб'
+        'unpaid_orders': unpaid_appointments,
+        'paid_orders': paid_appointments,
+        'total_price': total_price
     }
     # TODO добавить ссылки на оплату
     # TODO связать с базой данных
@@ -137,7 +126,7 @@ def popup(request):
     return render(request, 'popup.html')
 
 
-def service_finally(request):
+def service_finally(request, appointment):
     context = {
         'order': {
             'time': '16:30',

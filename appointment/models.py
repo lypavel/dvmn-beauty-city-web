@@ -11,6 +11,7 @@ class Appointment(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='appointments', verbose_name='Мастер')
     service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Услуга')
     final_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Итоговая цена')
+    is_paid = models.BooleanField(verbose_name='Статус оплаты', db_index=True, default=False)
     promocode = models.CharField(max_length=255, null=True, blank=True, verbose_name='Промокод')
     comment = models.TextField(null=True, blank=True,verbose_name='Комментарий')
     date = models.DateField(verbose_name='Дата')
