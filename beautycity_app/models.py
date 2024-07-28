@@ -44,7 +44,7 @@ class Service(models.Model):
 class Employee(models.Model):
     name = models.CharField(max_length=255, verbose_name='Имя')
     position = models.CharField(max_length=255, verbose_name='Специализация')
-    services = models.ManyToManyField(Service, verbose_name='Услуги')
+    services = models.ManyToManyField(Service, verbose_name='Услуги', related_name='employees')
     rating = models.DecimalField(max_digits=3, decimal_places=2,
                                  validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], verbose_name='Рейтинг')
     rating_img = ImageAndSvgField(upload_to='img/employees', null=True, blank=True, default='img/rating.svg',

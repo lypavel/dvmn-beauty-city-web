@@ -26,31 +26,34 @@
 				</div>
         <form action="{% url 'appointment:approve_appointment' %}" class="service__form" id="serviceForm">
           <label for="salon">Выберите салон</label>
+        {# hx-trigger="change" hx-get="{% url 'appointment:get_categories' %}?master_id={{ master_salon_id }}" hx-target="#category" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">#}
           <select name="selectSalon" id="salon" class="service__form_select" >
               {% for salon in salons %}
-                  <option value="{{ salon.id }}">{{ salon.title }}</option>
+                  <option value="{{ salon.id }}" {% if master_salon_id and master_salon_id == salon.id %} selected {% endif %}>{{ salon.title }}</option>
               {% endfor %}
           </select>
 
           <label for="category">Выберите категорию</label>
-          <select name="selectCategory" id="category" class="service__form_select" hx-trigger="load,change, change from:#salon, change from:#master" hx-get="{% url 'appointment:get_services' %}" hx-target="#select_service" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+          <select name="selectCategory" id="category" class="service__form_select" hx-trigger="load, change, change from:#salon, change from:#master" hx-get="{% url 'appointment:get_services' %}" hx-target="#select_service" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
             {% for category in categories %}
               <option value="{{ category.id }}">{{ category.title }}</option>
             {% endfor %}
           </select>
 
           <label for="select_service">Выберите услугу</label>
-          <select name="selectService" id="select_service" class="service__form_select" hx-trigger="load, change, change delay:2sec from:#category, change from:#salon" hx-get="{% url 'appointment:get_masters' %}" hx-target="#select_master" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
-
+          <select name="selectService" id="select_service" class="service__form_select" hx-trigger="load, change, change delay:5sec from:#category, change from:#salon" hx-get="{% url 'appointment:get_masters' %}" hx-target="#select_master" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+            {% for service in services %}
+              <option value="{{ service.id }}">{{ service.title }}</option>
+            {% endfor %}
           </select>
 
           <label for="select_master">Выберите мастера</label>
           <select name="selectMaster" id="select_master" class="service__form_select">
-
+            <option value="{{ master.id }}">{{ master.name }}</option>
           </select>
 
           <label for="inputDate">Выберите дату</label>
-          <input type="date" name="inputDate" id="inputDate" class="service__form_date service__form_select" hx-trigger="change, change from:#category, change from:#salon, change from:#select_service, change from:#select_master" hx-get="{% url 'appointment:get_slots' %}" hx-target="#available_slots" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+          <input type="date" name="inputDate" id="inputDate" class="service__form_date service__form_select" hx-trigger="change, change delay:2sec from:#category, change from:#salon, change from:#select_service, change from:#select_master" hx-get="{% url 'appointment:get_slots' %}" hx-target="#available_slots" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
 
           <label for="available_slots">Доступные временные слоты</label>
           <select name="availableSlots" id="available_slots" class="service__form_select">
@@ -60,7 +63,7 @@
               <div class="time__btns">
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="submit" class="time__btns_next active">Далее</button>
+                    <button type="submit" disabled class="time__btns_next" id="create_appointment_btn">Далее</button>
                     <button type="button" onclick="location.href='{% url 'index' %}'" class="time__btns_home">На главную</button>
                   </div>
                 </div>
@@ -83,4 +86,21 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script src="{% static 'js/main.js' %}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                const button = document.getElementById("create_appointment_btn");
+                const slot_select = document.getElementById("available_slots");
+                slot_select.addEventListener("htmx:afterSwap", (event)=> {
+                    button.disabled = event.target.value === ""
+                    if (event.target.value === "") {
+                        button.classList.remove("active")
+                    }
+                    else {
+                        button.classList.add("active")
+                    }
+
+
+                })
+            });
+        </script>
 	{% endblock scripts %}

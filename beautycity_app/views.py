@@ -50,6 +50,7 @@ def index(request):
     } for service in Service.objects.iterator()]
 
     masters = [{
+        'id': master.id,
         'name': master.name,
         'img': master.photo,
         'review': f'{master.reviews.count()} '
