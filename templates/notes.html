@@ -40,7 +40,7 @@
 							</div>
 						</div>
 						<div class="notes__content notes__content_upcoming">	
-							<div class="notes__main_title">ОПЛАЧЕННЫЕ</div>
+							<div class="notes__main_title">НЕОПЛАЧЕННЫЕ</div>
 							{% for order in unpaid_orders %}
 							<div class="notes__main_block">
 								<img src="{{ order.service.img.url }}" alt="service1" class="notes__main_block__img">
@@ -88,7 +88,7 @@
 						</div>
 
 						<div class="notes__content notes__content_history">	
-							<div class="notes__main_title">НЕОПЛАЧЕННЫЕ</div>
+							<div class="notes__main_title">ОПЛАЧЕННЫЕ</div>
 							{% for order in paid_orders %}
 							<div class="notes__main_block">
 								<img src="{{ order.service.img.url }}" alt="service1" class="notes__main_block__img">
