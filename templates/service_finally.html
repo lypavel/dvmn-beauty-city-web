@@ -43,7 +43,7 @@
 								<div class="serviceFinally__form_content">
 									<div class="serviceFinally__form_content__block fic">
 										<div class="serviceFinally__form_content__title">{{ service.name}}</div>
-										<div class="serviceFinally__form_content__price">{{ service.price}}</div>
+										<div class="serviceFinally__form_content__price">{{ service.price|floatformat:0 }} ₽</div>
 									</div>
 									<div class="serviceFinally__form_content__block fic">
 										<div class="serviceFinally__form_content__items fic">
@@ -60,8 +60,8 @@
 							</div>
 							<div class="serviceFinally__form_itesm">
 								<div class="contacts__form_block fic">
-									<input type="text" name="fname" class="contacts__form_iunput" placeholder="Введите имя" required="">
 									{% if not request.user.is_authenticated %}
+									<input type="text" name="fname" class="contacts__form_iunput" placeholder="Введите имя" required="">
 									<div class="contacts__form_inputBlock">
 										<input type="text" name="tel" class="contacts__form_iunput" placeholder="+7(999)999--99-99" required="">
 									</div>
@@ -69,12 +69,10 @@
 								</div>
 								
 								<textarea name="contactsTextarea" class="contacts__form_textarea" placeholder="Вопрос(необязательно)"></textarea>
-								<div class="contacts__form_checkboxBlock fic">
-									<input type="checkbox" class="contacts__form_checkbox" checked="">
-									<a href="{% static 'pdf/agreement.pdf' %}" target="_blank"><span class="contacts__form_checkboxBlock__intro">Я даю согласие на обработку персональных данных</span></a>
-								</div>
 								<button type="submit" class="serviceFinallys__form_btn">Записаться</button>
 								<button onclick="location.href='{% url 'index' %}'" type="button" class="serviceFinallys__form_back">Назад</button>
+								<br><a href="{% static 'pdf/agreement.pdf' %}" target="_blank"><span class="contacts__form_checkboxBlock__intro">Нажимая на кнопку "Записаться", я даю согласие на обработку персональных данных</span></a>
+								<!-- <br> -->
 							</div>
 						</form>	
 					</div>
