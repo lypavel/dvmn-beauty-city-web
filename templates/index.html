@@ -60,7 +60,7 @@
 					{% for salon in salons %}
 					<div class="col-6 col-md-4 col-lg-4 col-xl-3">
 						<div class="salons__block">
-							<img src="{% static salon.img %}" alt="salon" class="salons__block_img">
+							<img src="{% get_media_prefix %}{{ salon.img }}" alt="salon" class="salons__block_img">
 							<div class="salons__elems">
 								<div class="block__title salons__elems_title">{{ salon.title}}</div>
 								<div class="salons__elems_light">{{ salon.address }}</div>
@@ -100,7 +100,7 @@
 					{% for service in services %}
 					<div class="col-md-3">
 						<div class="cardBlock services__block">
-							<img src="{% static service.img %}" alt="service" class="services__block_img">
+							<img src="{% get_media_prefix %}{{ service.img }}" alt="service" class="services__block_img">
 							<div class="services__elems">
 								<div class="services__elems_title">{{ service.title }}</div>
 								<div class="services__elems_light">{{ service.price }}</div>
@@ -133,7 +133,7 @@
 					<div class="col-md-3">
 						<div class="cardBlock masters__block">
 							<div class="masters__header fic">
-								<img src="{% static master.img %}" alt="master" class="masters__header_img">
+								<img src="{% get_media_prefix %}{{ master.img }}" alt="master" class="masters__header_img">
 								<div class="masters__header_elmes">
 									<div class="masters__header_name">{{ master.name }}</div>
 									<img src="{% static master.rating_img %}" alt="rating" class="masters__header_rating">
