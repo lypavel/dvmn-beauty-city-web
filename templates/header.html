@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-2 col-md-2 col-lg-3">
                     <div class="header__block">
-                        <a href="{% url 'info'%}#contacts"><button class="header__block_btn">Записаться</button></a>
+                        <button onclick="location.href='{% url 'appointment:service' %}'" class="header__block_btn">Записаться</button></a>
                         <div class="header__block_auth">
 
                             {% if request.user.is_authenticated %}
