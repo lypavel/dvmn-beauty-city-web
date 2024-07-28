@@ -26,7 +26,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('administrator', views.administrator, name='administrator'),
     path('notes', views.notes, name='notes'),
-    path('popup', views.popup, name='popup'),  # Сделано для пред просмотра
     path('', include('appointment.urls', namespace='appointment')),
     path('', include('accounts.urls', namespace='accounts')),
     path('service_finally', views.service_finally, name='service_finally'),
