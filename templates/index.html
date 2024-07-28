@@ -149,7 +149,7 @@
 									<div class="masters__footer_light">СТАЖ РАБОТЫ:</div>
 									<div class="masters__footer_num">{{ master.experience }}</div>
 								</div>
-								<button onclick="location.href='{% url 'appointment:service' %}'" class="masters__footer_btn" >Записаться</button>
+								<button onclick="location.href='{% url 'appointment:service' %}?master_id={{ master.id }}'" class="masters__footer_btn" >Записаться</button>
 							</div>
 						</div>
 					</div>

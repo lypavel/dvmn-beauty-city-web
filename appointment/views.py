@@ -9,16 +9,23 @@ from beautycity_app.models import Salon, Service, Category, Employee, EmployeeSc
 
 
 def get_service(request):
+    master_id = request.GET.get('master_id')
     salons = Salon.objects.all()
     categories = Category.objects.all()
-    # services = Service.objects.filter(category=categories.first())
-    # masters = Employee.objects.filter(salons__id=salons.first().id, services__id=services.first().id)
+    services = None
+    master_salon_id = None
+    if master_id:
+        salons = salons.filter(masters__id=master_id)
+        master_salon_id = salons.filter(masters__id=master_id).first().id
+        services = Service.objects.select_related("category").filter(employees__id=master_id)
+        categories = set([x.category for x in services])
+
     context = {
         'salons': salons,
         'categories': categories,
-        # 'services': services,
-        # 'masters': masters
-
+        'master_id': master_id,
+        'services': services,
+        'master_salon_id': master_salon_id
     }
     return render(request, 'service.html', context)
 
@@ -60,7 +67,10 @@ def approve_appointment(request):
 
     if request.method == 'POST':
         fname = request.POST.get('fname')
-        phone = request.POST.get('tel')
+        if not request.user.is_authenticated:
+            phone = request.POST.get('tel')
+        else:
+            phone = request.user.phone_number
         comment = request.POST.get('contactsTextarea')
         client, created = Client.objects.get_or_create(
             phone_number=phone,
@@ -99,6 +109,15 @@ def get_services(request):
     category_id = request.GET.get('selectCategory')
     services = Service.objects.filter(category_id=category_id)
     return render(request, 'partials/get_services.html', {'services': services})
+
+
+# def get_categories(request):
+#     master_id = request.GET.get('master_id')
+#     categories = Category.objects.all()
+#     if master_id is not None:
+#         services = Service.objects.select_related("category").filter(employees__id=master_id)
+#         categories = set([x.category for x in services])
+#     return render(request, 'partials/get_categories.html', {'categories': categories})
 
 
 def get_slots(request):
