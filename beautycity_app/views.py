@@ -1,11 +1,12 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Q
 from django.shortcuts import render
 
 from .models import Employee, Salon, Service
 from appointment.models import Appointment, Review
-from accounts.models import Client
 
 
 def get_reviews_spelling(total_reviews: int) -> str:
@@ -66,7 +67,8 @@ def index(request):
         'date': review.date
     } for review in Review.objects.iterator()]
 
-    clients_count = Client.objects.count()
+    user = get_user_model()
+    clients_count = user.objects.count()
 
     context = {
         'salons': salons,
@@ -78,7 +80,6 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-# @login_required
 @user_passes_test(lambda user: user.is_superuser)
 def administrator(request):
     context = {
@@ -163,14 +164,15 @@ def info(request):
             'salon': period.salon.title,
             'start_time': period.start_time,
             'end_time': period.end_time
-        } for period in master.schedule.iterator()]
+        } for period in master.schedule.filter(
+            Q(date__gte=datetime.today())
+            & ~Q(date__gt=(datetime.today() + timedelta(days=2))))]
     } for master in Employee.objects
         .prefetch_related('reviews', 'schedule')
         .iterator()]
-
-    # masters_schedule = masters.
     reviews = Review.objects.all()
-    contacts = {'phone_number': '+7 (917) 902 38 00', 'email': 'hello@beauty.ru'}
+    contacts = {'phone_number': '+7 (917) 902 38 00',
+                'email': 'hello@beauty.ru'}
     context = {
         'salons': salons,
         'services': services,

@@ -106,10 +106,14 @@
                             <br>
                             <div class="masters__footer_block">
                                 <div class="masters__footer_light">РАСПИСАНИЕ:</div>
-                                {% for schedule in master.schedule %}
-                                    <div class="masters__footer_num">{{schedule.date}} - {{schedule.salon}}<br>{{schedule.start_time}} - {{schedule.end_time}}</div>
-                                    <br>
-                                {% endfor %}
+                                {% if master.schedule %}
+                                    {% for schedule in master.schedule %}
+                                        <div class="masters__footer_num">{{schedule.date}} - {{schedule.salon}}<br>{{schedule.start_time}} - {{schedule.end_time}}</div>
+                                        <br>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="masters__footer_num">Сегодня и в ближайшие два дня мастер не работает.</div>
+                                {% endif %}
                             </div>
 						</div>
 					</div>
