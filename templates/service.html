@@ -18,7 +18,7 @@
 		<div class="container">
 			<div class="service">
 				<div class="breadCrumbs">
-					<a href="#" class="breadCrumbs__item">На главную</a>
+					<a href="{% url 'index' %}" class="breadCrumbs__item">На главную</a>
 				</div>
 				<div class="service__block">
 					<h1 class="service__title">Запись на услугу</h1>
@@ -26,29 +26,31 @@
 				</div>
         <form action="{% url 'appointment:approve_appointment' %}" class="service__form" id="serviceForm">
           <label for="salon">Выберите салон</label>
-          <select name="selectSalon" id="salon" class="service__form_select" hx-trigger="change" hx-get="{% url 'appointment:get_services' %}" hx-target="#select_service" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+          <select name="selectSalon" id="salon" class="service__form_select" >
               {% for salon in salons %}
                   <option value="{{ salon.id }}">{{ salon.title }}</option>
               {% endfor %}
           </select>
 
           <label for="category">Выберите категорию</label>
-          <select name="selectCategory" id="category" class="service__form_select" hx-trigger="change" hx-get="{% url 'appointment:get_services' %}" hx-target="#select_service" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
-              {% for category in categories %}
-                  <option value="{{ category.id }}">{{ category.title }}</option>
-              {% endfor %}
+          <select name="selectCategory" id="category" class="service__form_select" hx-trigger="load,change, change from:#salon, change from:#master" hx-get="{% url 'appointment:get_services' %}" hx-target="#select_service" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+            {% for category in categories %}
+              <option value="{{ category.id }}">{{ category.title }}</option>
+            {% endfor %}
           </select>
 
           <label for="select_service">Выберите услугу</label>
-          <select name="selectService" id="select_service" class="service__form_select" hx-trigger="change" hx-get="{% url 'appointment:get_masters' %}" hx-target="#select_master" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+          <select name="selectService" id="select_service" class="service__form_select" hx-trigger="load, change, change delay:2sec from:#category, change from:#salon" hx-get="{% url 'appointment:get_masters' %}" hx-target="#select_master" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+
           </select>
 
           <label for="select_master">Выберите мастера</label>
           <select name="selectMaster" id="select_master" class="service__form_select">
+
           </select>
 
           <label for="inputDate">Выберите дату</label>
-          <input type="date" name="inputDate" id="inputDate" class="service__form_date service__form_select" hx-trigger="change" hx-get="{% url 'appointment:get_slots' %}" hx-target="#available_slots" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+          <input type="date" name="inputDate" id="inputDate" class="service__form_date service__form_select" hx-trigger="change, change from:#category, change from:#salon, change from:#select_service, change from:#select_master" hx-get="{% url 'appointment:get_slots' %}" hx-target="#available_slots" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
 
           <label for="available_slots">Доступные временные слоты</label>
           <select name="availableSlots" id="available_slots" class="service__form_select">

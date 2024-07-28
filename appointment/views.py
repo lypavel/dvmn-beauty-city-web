@@ -11,9 +11,13 @@ from beautycity_app.models import Salon, Service, Category, Employee, EmployeeSc
 def get_service(request):
     salons = Salon.objects.all()
     categories = Category.objects.all()
+    # services = Service.objects.filter(category=categories.first())
+    # masters = Employee.objects.filter(salons__id=salons.first().id, services__id=services.first().id)
     context = {
         'salons': salons,
-        'categories': categories
+        'categories': categories,
+        # 'services': services,
+        # 'masters': masters
 
     }
     return render(request, 'service.html', context)
@@ -79,13 +83,14 @@ def approve_appointment(request):
             comment=comment
 
         )
-        return redirect('index')
-
+        return redirect('notes')
 
 
 def get_masters(request):
     salon_id = request.GET.get('selectSalon')
     service_id = request.GET.get('selectService')
+    if salon_id == '' or service_id == '':
+        return HttpResponse()
     masters = Employee.objects.filter(salons__id__in=salon_id, services__id=service_id)
     return render(request, 'partials/get_masters.html', {'masters': masters})
 
@@ -102,10 +107,13 @@ def get_slots(request):
     date = request.GET.get('inputDate')
     service_id = request.GET.get('selectService')
     master_id = request.GET.get('selectMaster')
+    if salon_id == '' or service_id == '' or date == '' or master_id == '':
+        return HttpResponse()
     try:
         schedule = EmployeeSchedule.objects.get(salon_id=salon_id, date=date, employee_id=master_id)
     except EmployeeSchedule.DoesNotExist:
         schedule = None
+        return HttpResponse()
     time_slots = []
     service_length = Service.objects.get(id=service_id).duration
     if schedule:
@@ -133,6 +141,4 @@ def get_slots(request):
             if (datetime.combine(datetime.today(), start_time) + service_length).time() > end_time:
                 break
     formatted_slots = [slot.strftime('%H:%M') for slot in time_slots]
-    slots_html = render(request, "partials/get_slots.html", {'slots': formatted_slots})
-
-    return HttpResponse(slots_html)
+    return render(request, "partials/get_slots.html", {'slots': formatted_slots})
