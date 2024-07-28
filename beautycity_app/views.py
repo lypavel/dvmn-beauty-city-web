@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 from .models import Employee, Salon, Service
 from appointment.models import Appointment, Review
+from accounts.models import Client
 
 
 def get_reviews_spelling(total_reviews: int) -> str:
@@ -49,8 +50,7 @@ def index(request):
         'date': review.date
     } for review in Review.objects.iterator()]
 
-    clients_count = 1000
-    # FIXME: загружать количество зарегистрированных пользователей из бд
+    clients_count = Client.objects.count()
 
     context = {
         'salons': salons,
@@ -59,17 +59,6 @@ def index(request):
         'reviews': reviews,
         'clients_count': clients_count
     }
-
-    # контекст из шаблона.
-    # если количество контекста не соответствует весртка ломается
-    # salons минимум 3 максимум 4
-    # services минимум 4
-    # reviews минимум 4
-    # masters минимум 4
-    # TODO связать с базой данных
-    # TODO заменить статичный контекст на контекст из базы данных
-    # TODO при необходимости поправить стили чтобы количество данных не ломало страницу
-
     return render(request, 'index.html', context=context)
 
 
@@ -113,17 +102,7 @@ def notes(request):
         'total_price': total_price
     }
     # TODO добавить ссылки на оплату
-    # TODO связать с базой данных
-    # TODO почистить от статичных данных
     return render(request, 'notes.html', context=context)
-
-
-def popup(request):
-    # Сделано для пред просмотра
-    # TODO добавить ссылки
-    # TODO Разбить на отдельные popup
-
-    return render(request, 'popup.html')
 
 
 def service_finally(request, appointment):
@@ -142,8 +121,6 @@ def service_finally(request, appointment):
 
         }
     }
-    # TODO добавить ссылки
-    # TODO связать с базой данных
     return render(request, 'service_finally.html', context=context)
 
 
