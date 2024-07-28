@@ -123,25 +123,6 @@ def notes(request):
     return render(request, 'notes.html', context=context)
 
 
-def service_finally(request, appointment):
-    context = {
-        'order': {
-            'time': '16:30',
-            'date': '18 ноября',
-            'id': '12345',
-            'salon': 'BeautyCity Пушкинская',
-            'address': 'ул. Пушкинская, д. 78А',
-            'service': 'Дневной макияж',
-            'price': '751',
-            'master': 'Елена',
-            'avatar': 'img/masters/avatar/vizajist1.svg',
-
-
-        }
-    }
-    return render(request, 'service_finally.html', context=context)
-
-
 def info(request):
     salons = Salon.objects.all()
 
@@ -153,6 +134,7 @@ def info(request):
         } for service in Service.objects.iterator()]
 
     masters = [{
+        'id': master.id,
         'name': master.name,
         'img': master.photo,
         'review': f'{master.reviews.count()} '
