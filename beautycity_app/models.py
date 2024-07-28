@@ -65,7 +65,7 @@ class Employee(models.Model):
 
 
 class EmployeeSchedule(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='Мастер')
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='Мастер', related_name='schedule')
     salon = models.ForeignKey(Salon, on_delete=models.CASCADE, verbose_name='Салон')
     date = models.DateField(verbose_name='Дата')
     start_time = models.TimeField(verbose_name='Начало работы')

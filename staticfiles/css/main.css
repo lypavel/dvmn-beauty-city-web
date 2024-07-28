@@ -306,6 +306,8 @@ cursor: pointer;
 .masters .col-md-3 {
 	padding-left: 10px;
 	padding-right: 10px;
+	padding-top: 10px;
+
 }
 .masters__slider_arrows {
 	justify-content: space-between;
@@ -422,6 +424,8 @@ color: #F6A912;
 .reviews .col-md-3 {
 	padding-left: 10px;
 	padding-right: 10px;
+	padding-top: 10px;
+
 }
 .reviews__slider_arrows {
 	    justify-content: space-between;

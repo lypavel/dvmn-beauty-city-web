@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 
@@ -16,6 +18,20 @@ def get_reviews_spelling(total_reviews: int) -> str:
     else:
         spelling = word + 'ов'
     return spelling
+
+
+def format_service_duration(duration: timedelta) -> str:
+    total_minutes = duration.total_seconds() // 60
+
+    if total_minutes in (11, 12, 13, 14):
+        spelling = 'минут'
+    elif total_minutes % 10 == 1:
+        spelling = 'минута'
+    elif total_minutes % 10 in (2, 3, 4):
+        spelling = 'минуты'
+    else:
+        spelling = 'минут'
+    return f'{round(total_minutes)} {spelling}'
 
 
 def index(request):
@@ -149,10 +165,35 @@ def service_finally(request, appointment):
 
 def info(request):
     salons = Salon.objects.all()
-    services = Service.objects.all()
-    masters = Employee.objects.all()
+
+    services = [{
+            'title': service.name,
+            'price': f'{round(service.price)} ₽',
+            'img': service.img,
+            'duration': format_service_duration(service.duration)
+        } for service in Service.objects.iterator()]
+
+    masters = [{
+        'name': master.name,
+        'img': master.photo,
+        'review': f'{master.reviews.count()} '
+        f'{get_reviews_spelling(master.reviews.count())}',
+        'rating_img': master.rating_img,
+        'position': master.position,
+        'experience': master.experience,
+        'schedule': [{
+            'date': period.date,
+            'salon': period.salon.title,
+            'start_time': period.start_time,
+            'end_time': period.end_time
+        } for period in master.schedule.iterator()]
+    } for master in Employee.objects
+        .prefetch_related('reviews', 'schedule')
+        .iterator()]
+
+    # masters_schedule = masters.
     reviews = Review.objects.all()
-    contacts = ['Тел. +7 777 777 77 77', 'Почта 6ydb_KpacuBou@po4ta.ru']
+    contacts = {'phone_number': '+7 (917) 902 38 00', 'email': 'hello@beauty.ru'}
     context = {
         'salons': salons,
         'services': services,
@@ -162,4 +203,3 @@ def info(request):
     }
 
     return render(request, 'info.html', context=context)
-
