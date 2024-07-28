@@ -69,10 +69,12 @@
 								</div>
 								
 								<textarea name="contactsTextarea" class="contacts__form_textarea" placeholder="Вопрос(необязательно)"></textarea>
+								<div class="contacts__form_checkboxBlock fic">
+									<input type="checkbox" class="contacts__form_checkbox" checked="">
+									<a href="{% static 'pdf/agreement.pdf' %}" target="_blank"><span class="contacts__form_checkboxBlock__intro">Я даю согласие на обработку персональных данных</span></a>
+								</div>
 								<button type="submit" class="serviceFinallys__form_btn">Записаться</button>
 								<button onclick="location.href='{% url 'index' %}'" type="button" class="serviceFinallys__form_back">Назад</button>
-								<br><a href="{% static 'pdf/agreement.pdf' %}" target="_blank"><span class="contacts__form_checkboxBlock__intro">Нажимая на кнопку "Записаться", я даю согласие на обработку персональных данных</span></a>
-								<!-- <br> -->
 							</div>
 						</form>	
 					</div>
