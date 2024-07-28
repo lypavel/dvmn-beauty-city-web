@@ -9,12 +9,23 @@ from beautycity_app.models import Salon, Service, Category, Employee, EmployeeSc
 
 
 def get_service(request):
+    master_id = request.GET.get('master_id')
     salons = Salon.objects.all()
     categories = Category.objects.all()
+    services = None
+    master_salon_id = None
+    if master_id:
+        salons = salons.filter(masters__id=master_id)
+        master_salon_id = salons.filter(masters__id=master_id).first().id
+        services = Service.objects.select_related("category").filter(employees__id=master_id)
+        categories = set([x.category for x in services])
+
     context = {
         'salons': salons,
-        'categories': categories
-
+        'categories': categories,
+        'master_id': master_id,
+        'services': services,
+        'master_salon_id': master_salon_id
     }
     return render(request, 'service.html', context)
 
@@ -56,7 +67,10 @@ def approve_appointment(request):
 
     if request.method == 'POST':
         fname = request.POST.get('fname')
-        phone = request.POST.get('tel')
+        if not request.user.is_authenticated:
+            phone = request.POST.get('tel')
+        else:
+            phone = request.user.phone_number
         comment = request.POST.get('contactsTextarea')
         client, created = Client.objects.get_or_create(
             phone_number=phone,
@@ -79,13 +93,14 @@ def approve_appointment(request):
             comment=comment
 
         )
-        return redirect('index')
-
+        return redirect('notes')
 
 
 def get_masters(request):
     salon_id = request.GET.get('selectSalon')
     service_id = request.GET.get('selectService')
+    if salon_id == '' or service_id == '':
+        return HttpResponse()
     masters = Employee.objects.filter(salons__id__in=salon_id, services__id=service_id)
     return render(request, 'partials/get_masters.html', {'masters': masters})
 
@@ -96,16 +111,28 @@ def get_services(request):
     return render(request, 'partials/get_services.html', {'services': services})
 
 
+# def get_categories(request):
+#     master_id = request.GET.get('master_id')
+#     categories = Category.objects.all()
+#     if master_id is not None:
+#         services = Service.objects.select_related("category").filter(employees__id=master_id)
+#         categories = set([x.category for x in services])
+#     return render(request, 'partials/get_categories.html', {'categories': categories})
+
+
 def get_slots(request):
     salon_id = request.GET.get('selectSalon')
     category_id = request.GET.get('selectCategory')
     date = request.GET.get('inputDate')
     service_id = request.GET.get('selectService')
     master_id = request.GET.get('selectMaster')
+    if salon_id == '' or service_id == '' or date == '' or master_id == '':
+        return HttpResponse()
     try:
         schedule = EmployeeSchedule.objects.get(salon_id=salon_id, date=date, employee_id=master_id)
     except EmployeeSchedule.DoesNotExist:
         schedule = None
+        return HttpResponse()
     time_slots = []
     service_length = Service.objects.get(id=service_id).duration
     if schedule:
@@ -133,6 +160,4 @@ def get_slots(request):
             if (datetime.combine(datetime.today(), start_time) + service_length).time() > end_time:
                 break
     formatted_slots = [slot.strftime('%H:%M') for slot in time_slots]
-    slots_html = render(request, "partials/get_slots.html", {'slots': formatted_slots})
-
-    return HttpResponse(slots_html)
+    return render(request, "partials/get_slots.html", {'slots': formatted_slots})
