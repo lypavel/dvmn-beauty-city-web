@@ -8,6 +8,7 @@ class AppointmentAdmin(admin.ModelAdmin):
     list_display = ['client', 'employee', 'service', 'final_price', 'date', 'start_time', 'end_time']
     search_fields = ['client__username', 'employee__name', 'service__name']
     list_filter = ['date', 'employee']
+    raw_id_fields = ('client',)
 
 
 @admin.register(Review)
@@ -15,5 +16,3 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ['name', 'rating', 'text', 'date']
     search_fields = ['date', 'name', 'rating']
     list_filter = ['date', 'rating']
-
-
