@@ -105,11 +105,8 @@ def notes(request):
     appointments = Appointment.objects\
         .filter(client=request.user.id)\
         .select_related('service', 'employee', 'salon')
-    print(appointments)
     paid_appointments = appointments.filter(is_paid=True)
     unpaid_appointments = appointments.filter(is_paid=False)
-    print(paid_appointments)
-
     total_price = 0
     for appointment in unpaid_appointments:
         total_price += appointment.final_price

@@ -1,9 +1,10 @@
 from datetime import timedelta, datetime
 
+from django.contrib.auth import get_user_model, login
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from accounts.models import Client
+from accounts.forms import UserRegisterForm
 from appointment.models import Appointment
 from beautycity_app.models import Salon, Service, Category, Employee, EmployeeSchedule
 
@@ -66,18 +67,41 @@ def approve_appointment(request):
         return render(request, 'service_finally.html', context=context)
 
     if request.method == 'POST':
-        fname = request.POST.get('fname')
         if not request.user.is_authenticated:
-            phone = request.POST.get('tel')
+            form = UserRegisterForm(request.POST)
+            if not form.is_valid():
+                errors = form.errors
+                salon = Salon.objects.get(id=request.session['salon_id'])
+                service = Service.objects.get(id=request.session['service_id'])
+                master = Employee.objects.get(id=request.session['master_id'])
+                date = request.session['date']
+                slot = request.session['time']
+                context = {
+                    'salon': salon,
+                    'date': date,
+                    'service': service,
+                    'master': master,
+                    'time': slot,
+                    'errors': errors
+                }
+                return render(request, 'service_finally.html', context=context)
+            user_data = form.cleaned_data
+            phone = user_data.pop('phone_number')
+            fname = user_data.pop('first_name')
         else:
             phone = request.user.phone_number
+            fname = request.user.first_name
+
         comment = request.POST.get('contactsTextarea')
+        Client = get_user_model()
         client, created = Client.objects.get_or_create(
             phone_number=phone,
             defaults={
                 'first_name': fname,
             }
         )
+        if client.is_active:
+            login(request, client)
 
         start_time = datetime.strptime(request.session['time'], '%H:%M').time()
         service = Service.objects.get(id=request.session['service_id'])

@@ -61,14 +61,24 @@
 							<div class="serviceFinally__form_itesm">
 								<div class="contacts__form_block fic">
 									{% if not request.user.is_authenticated %}
-									<input type="text" name="fname" class="contacts__form_iunput" placeholder="Введите имя" required="">
-									<div class="contacts__form_inputBlock">
-										<input type="text" name="tel" class="contacts__form_iunput" placeholder="+7(999)999--99-99" required="">
-									</div>
+										<input type="text" name="first_name" class="contacts__form_iunput" placeholder="Введите имя" required="">
+										<div class="contacts__form_inputBlock">
+											<input type="text" name="phone_number" class="contacts__form_iunput" placeholder="+7(999)999--99-99" required="">
+										</div>
 									{% endif %}
 								</div>
 								
 								<textarea name="contactsTextarea" class="contacts__form_textarea" placeholder="Вопрос(необязательно)"></textarea>
+								{% if errors.phone_number %}
+									{% for error in errors.phone_number %}
+										<span class="contacts__form_error">Номер телефона: {{error}}</span><br>
+									{% endfor %}
+								{% endif %}
+								{% if errors.first_name %}
+									{% for error in errors.first_name %}
+										<span class="contacts__form_error">Имя пользователя: {{error}}</span>
+									{% endfor %}
+								{% endif %}
 								<div class="contacts__form_checkboxBlock fic">
 									<input type="checkbox" class="contacts__form_checkbox" checked="">
 									<a href="{% static 'pdf/agreement.pdf' %}" target="_blank"><span class="contacts__form_checkboxBlock__intro">Я даю согласие на обработку персональных данных</span></a>
