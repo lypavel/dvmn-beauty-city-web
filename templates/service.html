@@ -34,17 +34,15 @@
           </select>
 
           <label for="category">Выберите категорию</label>
-          <select name="selectCategory" id="category" class="service__form_select" hx-trigger="load, change, change from:#salon, change from:#select_master" hx-get="{% url 'appointment:get_services' %}" hx-target="#select_service" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+          <select name="selectCategory" id="category" class="service__form_select" hx-trigger="load, change, change from:#salon" hx-get="{% url 'appointment:get_services' %}" hx-target="#select_service" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
             {% for category in categories %}
               <option value="{{ category.id }}">{{ category.title }}</option>
             {% endfor %}
           </select>
 
           <label for="select_service">Выберите услугу</label>
-          <select name="selectService" id="select_service" class="service__form_select">
-            {% for service in services %}
-              <option value="{{ service.id }}">{{ service.title }}</option>
-            {% endfor %}
+          <select name="selectService" id="select_service" class="service__form_select" >
+
           </select>
 
           <label for="select_master">Выберите мастера</label>
@@ -53,7 +51,7 @@
 
           </select>
           <label for="inputDate">Выберите дату</label>
-          <input type="date" name="inputDate" id="inputDate" class="service__form_date service__form_select" hx-trigger="change, change from:#category, change from:#salon, change from:#select_service, change from:#select_master" hx-get="{% url 'appointment:get_slots' %}" hx-target="#available_slots" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
+            <input type="date" name="inputDate" id="inputDate" class="service__form_date service__form_select" hx-trigger="change, change from:#category, change from:#salon, change from:#select_service, change from:#select_master" hx-get="{% url 'appointment:get_slots' %}" hx-target="#available_slots" hx-include="[name='selectSalon'], [name='selectCategory'], [name='selectService'], [name='selectMaster'], [name='inputDate']">
 
           <label for="available_slots">Доступные временные слоты</label>
           <select name="availableSlots" id="available_slots" class="service__form_select">
@@ -98,21 +96,51 @@
                     else {
                         button.classList.add("active")
                     }
-
-
                 })
-            });
-            document.addEventListener('htmx:afterSwap', function (event) {
-                if (event.detail.target.id === "available_slots" || event.detail.target.id === "select_service") {
+                const service_select = document.getElementById("select_service")
+                service_select.addEventListener("change", (event)=> {
                   var selectSalonValue = document.querySelector('select[name="selectSalon"]').value;
                   var selectServiceValue = document.querySelector('select[name="selectService"]').value;
 
                   // Формируем URL с параметрами
                   var url = `{% url 'appointment:get_masters' %}?selectSalon=${selectSalonValue}&selectService=${selectServiceValue}`;
+                  // Выполняем GET-запрос с обновленным URL
+                  htmx.ajax('GET', url, '#select_master');                })
+            });
 
+            document.addEventListener('htmx:afterSwap', function (event) {
+                if (event.detail.target.id === "select_service") {
+                  var selectSalonValue = document.querySelector('select[name="selectSalon"]').value;
+                  var selectServiceValue = document.querySelector('select[name="selectService"]').value;
+
+                  // Формируем URL с параметрами
+                  var url = `{% url 'appointment:get_masters' %}?selectSalon=${selectSalonValue}&selectService=${selectServiceValue}`;
                   // Выполняем GET-запрос с обновленным URL
                   htmx.ajax('GET', url, '#select_master');
                 }
             });
+            document.addEventListener('htmx:afterSwap', function (event) {
+              if (event.detail.target.id === 'select_master') {
+
+                var selectMaster = document.querySelector('select[name="selectMaster"]')
+                var selectDate = document.querySelector('input[name="inputDate"]')
+                var selectSlot = document.querySelector('select[name="availableSlots"]')
+                if (selectDate!==null) {
+                  selectDate.value = '';
+                  document.getElementById("create_appointment_btn").classList.remove('active');
+                  document.getElementById("create_appointment_btn").disabled = true;
+                }
+
+                if (selectSlot!==null) {
+                  selectSlot.value = '';
+                  document.getElementById("create_appointment_btn").classList.remove('active');
+                  document.getElementById("create_appointment_btn").disabled = true;
+                }
+
+              }
+
+            });
+
+
         </script>
 	{% endblock scripts %}
