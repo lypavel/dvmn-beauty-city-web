@@ -73,7 +73,7 @@
 									<input type="checkbox" id="agreement_checkbox" class="contacts__form_checkbox">
 									<a href="{% static 'pdf/agreement.pdf' %}" target="_blank"><span class="contacts__form_checkboxBlock__intro">Я даю согласие на обработку персональных данных</span></a>
 								</div>
-								<button type="submit" id="appointment_button" class="serviceFinallys__form_btn">Записаться</button>
+								<button type="submit" id="appointment_button" class="serviceFinallys__form_btn" disabled>Записаться</button>
 								<button onclick="location.href='{% url 'index' %}'" type="button" class="serviceFinallys__form_back">Назад</button>
 							</div>
 						</form>	
@@ -139,8 +139,11 @@
 
         if (!isChecked) {
           approve_button.classList.remove("active");
+          approve_button.disabled = true
+
         } else {
           approve_button.classList.add("active");
+          approve_button.disabled = false;
         }
 
 
