@@ -1375,11 +1375,21 @@ height: 53px;
 
 btn
 */
-background: #FFCD07;
+background: #EBEBEB;
 border-radius: 5px;
-color: #FFFFFF;
+color: #B0B0B0;
 border: none;
 }
+
+.serviceFinallys__form_btn.active {
+	background: #FFCD07;
+	color: #fff;
+}
+
+
+
+
+
 .serviceFinallys__form_back {
 	width: 114px;
 height: 53px;
